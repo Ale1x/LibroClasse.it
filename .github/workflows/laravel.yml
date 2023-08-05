@@ -28,7 +28,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script_stop: true
           script: |
-            cd /apps/laravel
+            cd apps/laravel
             docker pull alee1x/libro-scuola-it:latest
             docker stop app_container || true
             docker rm app_container || true
