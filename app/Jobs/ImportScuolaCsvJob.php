@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Jobs;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
+
+class ImportScuolaCsvJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $filePath;
+
+    public function __construct(string $filePath)
+    {
+        $this->filePath = $filePath;
+    }
+
+    public function handle()
+    {
+        $query = sprintf("
+            LOAD DATA LOCAL INFILE '%s'
+            INTO TABLE scuole
+            FIELDS TERMINATED BY ','
+            ENCLOSED BY '\"'
+            LINES TERMINATED BY '\\n'
+            IGNORE 1 ROWS
+            (
+                @ANNOSCOLASTICO,@AREAGEOGRAFICA,@REGIONE,@PROVINCIA,@CODICEISTITUTORIFERIMENTO,@DENOMINAZIONEISTITUTORIFERIMENTO,@CODICESCUOLA,@DENOMINAZIONESCUOLA,@INDIRIZZOSCUOLA,@CAPSCUOLA,@CODICECOMUNESCUOLA,@DESCRIZIONECOMUNE,@DESCRIZIONECARATTERISTICASCUOLA,@DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA,@INDICAZIONESEDEDIRETTIVO,@INDICAZIONESEDEOMNICOMPRENSIVO,@INDIRIZZOEMAILSCUOLA,@INDIRIZZOPECSCUOLA,@SITOWEBSCUOLA,@SEDESCOLASTICA
+            )
+            SET
+                ANNOSCOLASTICO = TRIM(@ANNOSCOLASTICO),
+                AREAGEOGRAFICA = TRIM(@AREAGEOGRAFICA),
+                REGIONE = TRIM(@REGIONE),
+                PROVINCIA = TRIM(@PROVINCIA),
+                CODICEISTITUTORIFERIMENTO = TRIM(@CODICEISTITUTORIFERIMENTO),
+                DENOMINAZIONEISTITUTORIFERIMENTO = TRIM(@DENOMINAZIONEISTITUTORIFERIMENTO),
+                CODICESCUOLA = TRIM(@CODICESCUOLA),
+                DENOMINAZIONESCUOLA = TRIM(@DENOMINAZIONESCUOLA),
+                INDIRIZZOSCUOLA = TRIM(@INDIRIZZOSCUOLA),
+                CAPSCUOLA = TRIM(@CAPSCUOLA),
+                CODICECOMUNESCUOLA = TRIM(@CODICECOMUNESCUOLA),
+                DESCRIZIONECOMUNE = TRIM(@DESCRIZIONECOMUNE),
+                DESCRIZIONECARATTERISTICASCUOLA = TRIM(@DESCRIZIONECARATTERISTICASCUOLA),
+                DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA = TRIM(@DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA),
+                INDICAZIONESEDEDIRETTIVO = IF(TRIM(@INDICAZIONESEDEDIRETTIVO)='NO', 0, 1),
+                INDICAZIONESEDEOMNICOMPRENSIVO = IF(TRIM(@INDICAZIONESEDEOMNICOMPRENSIVO)='Non Disponibile', 0, 1),
+                INDIRIZZOEMAILSCUOLA = TRIM(@INDIRIZZOEMAILSCUOLA),
+                INDIRIZZOPECSCUOLA = IF(TRIM(@INDIRIZZOPECSCUOLA)='Non Disponibile', 0, 1),
+                SITOWEBSCUOLA = TRIM(@SITOWEBSCUOLA),
+                SEDESCOLASTICA = IF(TRIM(@SEDESCOLASTICA)='NO', 0, 1)
+        ", addslashes($this->filePath));
+
+        DB::connection()->getpdo()->exec($query);
+    }
+}

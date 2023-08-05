@@ -1,0 +1,7 @@
+.btn-custom {
+    border: 1px solid #000; /* Border color */
+}
+
+body.bg-gray {
+    background-color: #808080; /* Questo è solo un esempio di grigio opaco. Sostituisci con il colore esatto che desideri. */
+}
