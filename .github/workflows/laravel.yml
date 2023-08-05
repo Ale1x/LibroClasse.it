@@ -13,6 +13,8 @@ jobs:
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
       with:
         php-version: '8.2'
+        extensions: mbstring, dom, curl, pdo, pdo_mysql, gd, xml, ctype, json, bcmath, zip, pcntl, exif
+        coverage: none
     - uses: actions/checkout@v3
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
