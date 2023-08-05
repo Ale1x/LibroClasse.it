@@ -1,35 +1,32 @@
 name: Push to Production
-on: 
+on:
   push:
-    branches: 
-      - "master"
+    branches:
+    - "master"
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          
+    - uses: actions/checkout@v3
 
   deploy:
     needs: laravel-tests
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@master
-        with: 
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          script_stop: true
-          script: |
-            cd apps/laravel
-            docker pull alee1x/libro-scuola-it:latest
-            docker stop app_container || true
-            docker rm app_container || true
-            docker run --name=app_container -d -p 80:80 alee1x/libro-scuola-it:latest
+    - name: Deploy to Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        script_stop: true
+        script: |
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          cd apps/laravel
+          docker pull alee1x/libro-scuola-it:latest
+          docker stop app_container || true
+          docker rm app_container || true
+          docker run --name=app_container -d -p 80:80 alee1x/libro-scuola-it:latest
