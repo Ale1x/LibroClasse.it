@@ -24,7 +24,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           bash << 'EOF'
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME"
+          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           cd apps/laravel
           docker pull alee1x/libro-scuola-it:latest
           docker stop app_container || true
