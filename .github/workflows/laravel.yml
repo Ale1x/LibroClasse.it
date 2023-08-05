@@ -15,16 +15,15 @@ jobs:
     steps:
     - name: Deploy to Server
       uses: appleboy/ssh-action@master
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-        script_stop: true
         script: |
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
           cd apps/laravel
           docker pull alee1x/libro-scuola-it:latest
           docker stop app_container || true
