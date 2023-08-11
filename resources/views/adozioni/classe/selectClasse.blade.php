@@ -1,6 +1,6 @@
 @extends('adozioni.base.layout')
 
-@section('title', 'Select a Class')
+@section('title', 'Seleziona una Classe')
 
 @section('content')
 
@@ -15,7 +15,7 @@
         <div class="grid grid-cols-2 gap-4 mt-4" id="classList">
             @foreach ($classi as $class)
                 @php
-                    $url = "/books/" . $scuola->CODICESCUOLA . "/" . $class->ANNOCORSO . $class->SEZIONEANNO;
+                    $url = "/libri/" . $scuola->CODICESCUOLA . "/" . $class->ANNOCORSO . $class->SEZIONEANNO;
                 @endphp
 
                 <form action="{{ $url }}" method="get">

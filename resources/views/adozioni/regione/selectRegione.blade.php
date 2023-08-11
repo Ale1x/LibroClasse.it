@@ -1,6 +1,6 @@
 @extends('adozioni.base.layout')
 
-@section('title', 'Select a Region')
+@section('title', 'Seleziona una Regione')
 
 @section('content')
 

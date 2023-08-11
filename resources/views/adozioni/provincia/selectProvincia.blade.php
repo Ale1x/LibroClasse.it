@@ -1,6 +1,6 @@
 @extends('adozioni.base.layout')
 
-@section('title', 'Select a Province')
+@section('title', 'Seleziona una Provincia')
 
 @section('content')
 
@@ -8,7 +8,7 @@
         <div class="grid grid-cols-2 gap-4">
             @foreach ($provinces as $province)
                 @php
-                    $url = "/city/" . $province;
+                    $url = "/citta/" . $province;
                 @endphp
 
                 <form action="{{ $url }}" method="get">

@@ -32,6 +32,7 @@ class ScuolaFactory extends Factory
             'INDIRIZZOPECSCUOLA' => $this->faker->companyEmail,
             'SITOWEBSCUOLA' => $this->faker->url,
             'SEDESCOLASTICA' => $this->faker->text,
+            'tipo_scuola' => "Scuola Media",
         ];
     }
 }

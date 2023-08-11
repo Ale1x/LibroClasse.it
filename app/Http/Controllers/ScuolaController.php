@@ -8,14 +8,13 @@ use Illuminate\Support\Facades\Cache;
 
 class ScuolaController extends Controller
 {
-    public function index($region)
+    public function index($region, $grade)
     {
-        // Create a unique cache key based on the region
-        $cacheKey = "schools-for-region:{$region}";
+        $cacheKey = "schools-for-region:{$region}-grade:{$grade}";
 
-        // Retrieve or create the cache item
-        $scuole = Cache::remember($cacheKey, 600, function () use ($region) {
+        $scuole = Cache::remember($cacheKey, 600, function () use ($region, $grade) {
             return Scuola::where('DESCRIZIONECOMUNE', $region)
+                ->where('tipo_scuola', $grade) // Replace 'DESCRIZIONETIPOLOGIAGRADOISTRUZIONESCUOLA' column name with 'tipo_scuola'
                 ->select('id', 'DENOMINAZIONEISTITUTORIFERIMENTO')
                 ->whereIn('id', function ($query) {
                     $query->selectRaw('MIN(id)')
@@ -23,7 +22,6 @@ class ScuolaController extends Controller
                         ->groupBy('DENOMINAZIONEISTITUTORIFERIMENTO');
                 })->get();
         });
-
         if ($scuole->isEmpty()) {
             abort(404, 'Scuola non trovata');
         }

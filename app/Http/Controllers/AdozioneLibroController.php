@@ -68,6 +68,8 @@ class AdozioneLibroController extends Controller
             ->where('SEZIONEANNO', $sezioneAnno)
             ->get();
 
+
+
         return view('adozioni.libri.libriResponse', ['books' => $books, 'classe' => $class]);
     }
 
