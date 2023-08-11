@@ -22,7 +22,7 @@ class Scuola extends Model
         'INDICAZIONESEDEDIRETTIVO',
         'INDICAZIONESEDEOMNICOMPRENSIVO', 'INDIRIZZOEMAILSCUOLA',
         'INDIRIZZOPECSCUOLA', 'SITOWEBSCUOLA',
-        'SEDESCOLASTICA'
+        'SEDESCOLASTICA', 'tipo_scuola'
     ];
 
     public function adozioniLibri()

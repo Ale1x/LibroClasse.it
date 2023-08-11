@@ -15,8 +15,9 @@ class ClasseController extends Controller
 
         $scuola = Scuola::findOrFail($id);
 
-        $classi = Cache::remember($cacheKey, 600, function () use ($scuola) {
-            $codiceScuola = $scuola->CODICESCUOLA;
+        $codiceScuola = $scuola->CODICESCUOLA;
+
+        $classi = Cache::remember($cacheKey, 600, function () use ($codiceScuola) {
             return DB::table('adozione_libros')
                 ->where('CODICESCUOLA', $codiceScuola)
                 ->select('ANNOCORSO', 'SEZIONEANNO')

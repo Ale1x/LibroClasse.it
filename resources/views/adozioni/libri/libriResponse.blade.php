@@ -1,11 +1,11 @@
 @extends('adozioni.base.layout')
 
-@section('title', 'Book Adoption - Home')
+@section('title', 'Libri adottati')
 
 @section('content')
 
     <div class="container mx-auto px-4">
-        @if (!empty($books))
+        @if (!empty($books) && count($books) > 0)
             <h1 class="text-2xl font-bold mb-4">Libri della classe {{ $classe }}</h1>
             <div class="flex flex-wrap -m-4">
                 @foreach($books as $book)
@@ -22,6 +22,8 @@
                     </div>
                 @endforeach
             </div>
+        @else
+            <h1 class="text-2xl font-bold mb-4">Non ci sono libri disponibili per la classe {{ $classe }}.</h1>
         @endif
     </div>
 
