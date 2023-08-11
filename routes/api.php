@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('throttle:5,1')->group(function () {
-    Route::get('/{codiceScuola}', [AdozioneLibroController::class, 'getClassi']);
-    Route::get('/{codiceScuola}/{classe}', [AdozioneLibroController::class, 'getLibri']);
+    Route::post('/{codiceScuola}', [AdozioneLibroController::class, 'getClassi']);
+    Route::post('/{codiceScuola}/{classe}', [AdozioneLibroController::class, 'getLibri']);
 });
 
 route::get('/', [AdozioneLibroController::class, 'showApi']);
