@@ -1,66 +1,63 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# LibroScuola.it
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This project is a Laravel based application which provides an API (and a web application) for getting italian's schools yearly books.
 
-## About Laravel
+## Getting Started
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+These instructions will guide you on how to get a copy of the project up and running on your local machine for development and testing purposes.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Prerequisites
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Ensure you have the following installed on your local system:
 
-## Learning Laravel
+- PHP 8.1
+- Composer 2.2
+- Laravel 10.17.1
+- Csv Data Files (You can get them [Here](https://dati.istruzione.it/opendata/opendata/catalogo/#Scuola))
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Which csv files i have to download?
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+For information about schools you have to download csv files located [here](https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Scuole)
+For information about school's books you have to download csv files located [here](https://dati.istruzione.it/opendata/opendata/catalogo/elements1/?area=Adozioni%20libri%20di%20testo)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Installing
 
-## Laravel Sponsors
+1. Clone the repository to your local machine:
+2. Navigate to the project directory:
+   ```cd libroscuola.it```
+3. Install the project dependencies:
+   ```composer install```
+4. Migrate database tables:
+   ```php artisan migrate```
+5. Import schools data:
+   ```php artisan import:scuole <filepath>```
+6. Import books data:
+   ```./import.sh```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+The application should now be accessible at http://localhost.
 
-### Premium Partners
+### ENDPOINTS
+The application provides a set of endpoints:
+- GET / - Display the homepage.
+- GET /province/{region} - Get the provinces for the given region.
+- GET /citta/{province} - Get the cities for the given province.
+- GET /gradi/{city} - Get the grades for the given city.
+- GET /scuole/{region}/{grade} - Get the schools for the given region and grade.
+- GET /classi/{school} - Get the classes for the given school.
+- GET /libri/{codiceScuola}/{class} - Get the books for the given school and class.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### API ENDPOINTS
+- GET /api/ - Get the REST Api Documentation page
+- POST /api/{codiceScuola} - Get the classes for the given school.
+- POST /api/{codiceScuola}/{classe} - Get the books for the given school and class.
+Each endpoint is accessed in a RESTful manner, with data returned in a standard JSON format.
 
-## Contributing
+### Running the Tests
+PHPUnit is being used for testing this application. Run the following command to run the tests:
+    ```php artisan test```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### TO-DO:
+- Write Better Tests
+- Improve database queries
+- Migrate to Cassandra / ScyllaDB
+- Refactor Controllers
